@@ -14,4 +14,11 @@ public interface TestDao {
      * @return
      */
     List<Test1> findList();
+
+    /**
+     * 添加方法
+     * @param test1
+     * @return
+     */
+    Integer add(Test1 test1);
 }

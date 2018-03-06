@@ -2,8 +2,6 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-
 <mapper namespace="cn.zpro.ware.dao.TestDao">
 
     <!-- 返回的结果resultMap -->
@@ -13,16 +11,14 @@
         <result property="name" column="name"/>
         <result property="tiny" column="tiny"/>
         <result property="tiny2" column="tiny2"/>
-        <result property="sex" column="sex"
-                jdbcType="TINYINT"
-                javaType="cn.zpro.ware.entity.SexEum"
-                typeHandler="cn.zpro.ware.config.SexTypeHandler"/>
-
-
-
+        <result property="sex" column="sex" typeHandler="cn.zpro.ware.config.SexTypeHandler"/>
         <result property="creatTime" column="create_time"/>
     </resultMap>
     <select id="findList" resultType="cn.zpro.ware.entity.Test1">
         select * from test1
     </select>
+
+    <insert id="add">
+        INSERT INTO test1(id,sex) VALUES (#{id},#{sex})
+    </insert>
 </mapper>

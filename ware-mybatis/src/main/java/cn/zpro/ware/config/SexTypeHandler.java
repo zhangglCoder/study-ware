@@ -12,7 +12,6 @@ import java.sql.SQLException;
 /**
  * @author zhanggl
  */
-@MappedJdbcTypes(JdbcType.TINYINT)
 public class SexTypeHandler extends EnumOrdinalTypeHandler {
     public SexTypeHandler(Class type) {
         super(type);
@@ -20,8 +19,6 @@ public class SexTypeHandler extends EnumOrdinalTypeHandler {
 
     @Override
     public Enum getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        short aShort = rs.getShort(columnName);
-
-        return SexEum.findSexEum(aShort);
+        return SexEum.findSexEum(rs.getShort(columnName));
     }
 }

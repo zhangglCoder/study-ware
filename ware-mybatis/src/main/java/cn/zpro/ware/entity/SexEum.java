@@ -6,8 +6,8 @@ package cn.zpro.ware.entity;
 
 public enum SexEum {
 
-    MAN((short) 1, "男"),
-    WOMAN((short) 0, "女");
+    MAN((short) 0, "男"),
+    WOMAN((short) 1, "女");
 
     private Short value;
     private String desc;

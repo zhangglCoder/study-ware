@@ -1,6 +1,7 @@
 package cn.zrpo.ware.dao.test;
 
 
+import cn.zpro.ware.entity.SexEum;
 import cn.zpro.ware.entity.Test1;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -32,5 +33,17 @@ public class TestDao {
         SqlSession session = sessionFactory.openSession();
         List<Test1> list = session.selectList("cn.zpro.ware.dao.TestDao.findList",Test1.class);
         System.out.println(list);
+    }
+
+    @Test
+    public void testAdd(){
+        SqlSessionFactory sessionFactory = getSqlSessionFactory();
+        SqlSession session = sessionFactory.openSession();
+        Test1 test1 = new Test1();
+        test1.setId(2);
+        test1.setSex(SexEum.WOMAN);
+        int rowCount = session.insert("cn.zpro.ware.dao.TestDao.add",test1);
+        System.out.println(rowCount);
+
     }
 }
