@@ -20,5 +20,5 @@ public interface TestDao {
      * @param test1
      * @return
      */
-    Integer add(Test1 test1);
+    Integer insert(Test1 test1);
 }

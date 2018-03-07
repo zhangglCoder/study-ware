@@ -40,9 +40,10 @@ public class TestDao {
         SqlSessionFactory sessionFactory = getSqlSessionFactory();
         SqlSession session = sessionFactory.openSession();
         Test1 test1 = new Test1();
-        test1.setId(2);
-        test1.setSex(SexEum.WOMAN);
-        int rowCount = session.insert("cn.zpro.ware.dao.TestDao.add",test1);
+        test1.setId(30);
+        test1.setSex(SexEum.MAN);
+        int rowCount = session.insert("cn.zpro.ware.dao.TestDao.insert",test1);
+        session.commit();
         System.out.println(rowCount);
 
     }

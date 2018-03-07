@@ -18,7 +18,7 @@
         select * from test1
     </select>
 
-    <insert id="add">
-        INSERT INTO test1(id,sex) VALUES (#{id},#{sex})
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test1(id,sex) VALUES (#{id},#{sex,typeHandler=cn.zpro.ware.config.SexTypeHandler})
     </insert>
 </mapper>
