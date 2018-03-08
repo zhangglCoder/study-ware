@@ -11,11 +11,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
-public class TestDao {
+public class TestDao extends BaseTest {
 
-    private static SqlSessionFactory getSqlSessionFactory(){
+    private static SqlSessionFactory getSqlSessionFactory() {
         String resource = "mybatis-config.xml";
         InputStream inputStream = null;
         try {
@@ -28,23 +29,38 @@ public class TestDao {
 
 
     @Test
-    public void testFindList(){
+    public void testFindList() {
         SqlSessionFactory sessionFactory = getSqlSessionFactory();
         SqlSession session = sessionFactory.openSession();
-        List<Test1> list = session.selectList("cn.zpro.ware.dao.TestDao.findList",Test1.class);
-        System.out.println(list);
+        List<Test1> list = session.selectList("cn.zpro.ware.dao.TestDao.findList", Test1.class);
+        print(list);
     }
 
     @Test
-    public void testAdd(){
+    public void testAdd() {
         SqlSessionFactory sessionFactory = getSqlSessionFactory();
         SqlSession session = sessionFactory.openSession();
         Test1 test1 = new Test1();
         test1.setId(30);
         test1.setSex(SexEum.MAN);
-        int rowCount = session.insert("cn.zpro.ware.dao.TestDao.insert",test1);
+        int rowCount = session.insert("cn.zpro.ware.dao.TestDao.insert", test1);
         session.commit();
         System.out.println(rowCount);
+    }
 
+    @Test
+    public void testSpring2() {
+        cn.zpro.ware.dao.TestDao dao = BaseTest.context.getBean(cn.zpro.ware.dao.TestDao.class);
+        Test1 test1 = new Test1();
+        test1.setId(35);
+        test1.setSex(SexEum.MAN);
+        test1.setCreatTime(new Date());
+        print(dao.insert(test1));
+    }
+
+    @Test
+    public void testSpring() {
+        cn.zpro.ware.dao.TestDao dao = BaseTest.context.getBean(cn.zpro.ware.dao.TestDao.class);
+        print(dao.findList());
     }
 }

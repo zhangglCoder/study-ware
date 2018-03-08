@@ -14,11 +14,19 @@
         <result property="sex" column="sex" typeHandler="cn.zpro.ware.config.SexTypeHandler"/>
         <result property="creatTime" column="create_time"/>
     </resultMap>
+    <sql id="column">
+        id,id2,name,tiny,tiny2,sex,create_time as creatTime
+    </sql>
     <select id="findList" resultType="cn.zpro.ware.entity.Test1">
-        select * from test1
+        select
+         <include refid="column" />
+         from test1
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO test1(id,sex) VALUES (#{id},#{sex,typeHandler=cn.zpro.ware.config.SexTypeHandler})
+        INSERT INTO test1(id,sex,create_time)
+          VALUES (
+            #{id},#{sex,typeHandler=cn.zpro.ware.config.SexTypeHandler},#{creatTime}
+          )
     </insert>
 </mapper>
