@@ -10,11 +10,10 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="cn.zpro.ware.user.service.impl" />
-    <dubbo:application name="user-provider" logger="slf4j"/>
+    <dubbo:application name="consumer" logger="slf4j"/>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <dubbo:protocol name="dubbo" port="20880"/>
 
-    <dubbo:service filter="xxx" interface="cn.zpro.ware.user.service.UserService" ref="userServiceImpl"/>
+    <dubbo:reference interface="cn.zpro.ware.user.service.UserService"  id="userService"/>
 
 </beans>
