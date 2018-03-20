@@ -1,6 +1,7 @@
 package cn.zpro.ware.dao;
 
 import cn.zpro.ware.entity.Category;
+import cn.zpro.ware.entity.CategoryExt;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface CategoryDao {
      * @param parentId
      * @return
      */
-    List<Category> findListByParentId(Integer parentId);
+    List<CategoryExt> findListByParentId(Integer parentId);
 }

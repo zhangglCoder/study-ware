@@ -5,7 +5,7 @@
 <mapper namespace="cn.zpro.ware.dao.CategoryDao">
 
     <!-- 返回的结果resultMap -->
-    <resultMap id="BaseResultMapper" type="cn.zpro.ware.entity.Category">
+    <resultMap id="BaseResultMapper" type="cn.zpro.ware.entity.CategoryExt">
         <result property="id" column="id"/>
         <result property="parentId" column="parent_id"/>
         <result property="name" column="name"/>
@@ -13,6 +13,7 @@
         <result property="sortOrder" column="sort_order"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
+        <association property="c" column="id" select="cn.zpro.ware.dao.CategoryDao.selectCount2" />
     </resultMap>
 
     <select id="findListByParentId" parameterType="map" resultMap="BaseResultMapper">
@@ -20,4 +21,7 @@
          from mmall_category
     </select>
 
+    <select id="selectCount2" resultType="java.math.BigDecimal">
+        select count(*) as count  from mmall_category where id = #{id}
+    </select>
 </mapper>
