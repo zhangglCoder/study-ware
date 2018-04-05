@@ -28,6 +28,7 @@ public class MyPlugin implements Interceptor {
         mappedStatement.getSqlSource().getBoundSql(parameter);
         BoundSql boundSql = mappedStatement.getBoundSql(parameter);
         String resetSql = doCheckAndResetSQL(boundSql.getSql());
+        ///
         return getMappedStatement(mappedStatement, boundSql, resetSql);
     }
 
