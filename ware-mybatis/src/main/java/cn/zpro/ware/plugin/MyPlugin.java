@@ -15,6 +15,7 @@ import java.util.Properties;
 public class MyPlugin implements Interceptor {
 
 
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         invocation.getArgs()[0] = getCheckAndResetSQL(invocation);
