@@ -9,6 +9,7 @@ public class BaseTest {
             new ClassPathXmlApplicationContext("spring-bean.xml");
 
     public BaseTest() {
+        //github
     }
 
     /**
