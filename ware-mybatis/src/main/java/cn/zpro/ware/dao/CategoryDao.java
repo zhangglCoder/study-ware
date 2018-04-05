@@ -16,4 +16,6 @@ public interface CategoryDao {
      * @return
      */
     List<CategoryExt> findListByParentId(Integer parentId);
+
+    Integer update();
 }

@@ -13,6 +13,10 @@
         <typeHandler handler="cn.zpro.ware.config.SexTypeHandler" javaType="cn.zpro.ware.entity.SexEum"/>
     </typeHandlers>
 
+    <plugins>
+        <plugin interceptor="cn.zpro.ware.plugin.MyPlugin" />
+    </plugins>
+
     <!--<environments default="development">-->
         <!--<environment id="development">-->
             <!--<transactionManager type="JDBC"/>-->

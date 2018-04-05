@@ -24,4 +24,8 @@
     <select id="selectCount2" resultType="java.math.BigDecimal">
         select count(*) as count  from mmall_category where id = #{id}
     </select>
+
+    <update id="update">
+        UPDATE mmall_category set name = '家用电器123' where id = '100001';
+    </update>
 </mapper>

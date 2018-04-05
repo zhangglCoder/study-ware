@@ -37,6 +37,13 @@ public class TestCategoryDao extends BaseTest {
         print(listByParentId);
     }
 
+    @Test
+    public void testPlugin() {
+        CategoryDao dao = BaseTest.context.getBean(CategoryDao.class);
+        dao.update();
+
+    }
+
 //    @Test
 //    public void testFindListByParentId() {
 //        CategoryDao dao = BaseTest.context.getBean(CategoryDao.class);
