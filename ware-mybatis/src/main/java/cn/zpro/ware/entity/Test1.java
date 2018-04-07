@@ -3,6 +3,7 @@ package cn.zpro.ware.entity;
 import java.util.Date;
 
 /**
+ * test chanel merge
  * @author zhanggl
  */
 public class Test1 {
