@@ -4,19 +4,23 @@ import cn.zpro.ware.excel.model.ExcelPropertyIndexModel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author zhanggl
@@ -24,36 +28,88 @@ import java.util.List;
 @RestController
 public class ExcelController {
 
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+
     @GetMapping("index")
     public ModelAndView test(ModelAndView modelAndView) {
         modelAndView.setViewName("index");
         return modelAndView;
     }
 
-    @PostMapping("test")
-    public ResponseEntity<byte[]> test() throws FileNotFoundException {
-        OutputStream out = new FileOutputStream("F:/77.xlsx");
-        try {
-            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
-            //写第一个sheet, sheet1  数据全是List<String> 无模型映射关系
-            Sheet sheet1 = new Sheet(1, 0, ExcelPropertyIndexModel.class);
-            sheet1.setSheetName("第一个sheet");
-            writer.write(getData(), sheet1);
-            writer.finish();
 
-            return fileDownLoad();
+    @PostMapping("test2")
+    @ResponseBody
+    public ResponseEntity<byte[]> test2() throws FileNotFoundException {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                out.close();
-            } catch (IOException e) {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        threadPoolTaskExecutor.execute(()->{
+            try (OutputStream out = new FileOutputStream("F:/77.xlsx")) {
+                ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+                Sheet sheet1 = new Sheet(1, 0, ExcelPropertyIndexModel.class);
+                sheet1.setSheetName("第一个sheet");
+                writer.write(getData(), sheet1);
+                writer.finish();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        return null;
+            countDownLatch.countDown();
+        });
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Object call = threadPoolTaskExecutor.submit(new Callable<Object>() {
+                @Override
+                public Object call() throws Exception {
+                    System.out.println("call");
+                    ResponseEntity<byte[]> responseEntity = fileDownLoad();
+                    return responseEntity;
+                }
+            }).get();
+
+            return (ResponseEntity<byte[]>)call;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
+    @PostMapping("test")
+    @ResponseBody
+    public ResponseEntity<byte[]> test() throws FileNotFoundException {
+
+        ResponseEntity<byte[]> responseEntity = null;
+
+        threadPoolTaskExecutor.execute(() -> {
+            try (OutputStream out = new FileOutputStream("F:/77.xlsx")) {
+                ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+                Sheet sheet1 = new Sheet(1, 0, ExcelPropertyIndexModel.class);
+                sheet1.setSheetName("第一个sheet");
+                writer.write(getData(), sheet1);
+                writer.finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        threadPoolTaskExecutor.submit(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                return fileDownLoad();
+            }
+
+        });
+
+        return null;
     }
 
     private ResponseEntity<byte[]> fileDownLoad() throws Exception {

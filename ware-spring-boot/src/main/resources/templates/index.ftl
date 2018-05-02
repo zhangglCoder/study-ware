@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <form action="test" method="post">
+    <form action="test2" method="post">
         <input type="submit" value="Excel" />
     </form>
 
