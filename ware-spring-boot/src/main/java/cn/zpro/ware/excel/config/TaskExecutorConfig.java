@@ -14,8 +14,10 @@ public class TaskExecutorConfig {
     @Bean
     public ThreadPoolTaskExecutor threadPoolTaskExecutor(){
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(100);
-        threadPoolTaskExecutor.setMaxPoolSize(Integer.MAX_VALUE);
+        threadPoolTaskExecutor.setCorePoolSize(5);
+        threadPoolTaskExecutor.setAllowCoreThreadTimeOut(true);
+        threadPoolTaskExecutor.setKeepAliveSeconds(5);
+        threadPoolTaskExecutor.setMaxPoolSize(20);
         return threadPoolTaskExecutor;
     }
 }

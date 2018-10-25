@@ -18,6 +18,7 @@
         <module>ware-spring-boot</module>
         <module>ware-redis</module>
         <module>ware-activemq</module>
+        <module>ware-netty</module>
     </modules>
 
     <build>
