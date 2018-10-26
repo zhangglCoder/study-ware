@@ -19,6 +19,7 @@
         <module>ware-redis</module>
         <module>ware-activemq</module>
         <module>ware-netty</module>
+        <module>ware-cache</module>
     </modules>
 
     <build>
