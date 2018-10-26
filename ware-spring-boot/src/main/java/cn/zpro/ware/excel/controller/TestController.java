@@ -25,6 +25,9 @@ import java.util.concurrent.Semaphore;
  */
 @RestController
 public class TestController {
+    static {
+        initFlowRules();
+    }
     public static Integer total = 100;
 
     @Autowired
@@ -36,14 +39,15 @@ public class TestController {
         rule.setResource("haha");
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
         // Set limit QPS to 20.
-        rule.setCount(1);
+        rule.setCount(5);
         rules.add(rule);
         FlowRuleManager.loadRules(rules);
     }
 
     @GetMapping("index")
-    public ModelAndView test(ModelAndView modelAndView) throws BlockException {
-        initFlowRules();
+    public ModelAndView test(ModelAndView modelAndView) throws BlockException, InterruptedException {
+        //initFlowRules();
+        long startTime = System.currentTimeMillis();
         Entry entry = null;
         // 务必保证finally会被执行
         try {
@@ -52,9 +56,10 @@ public class TestController {
             /**
              * 被保护的业务逻辑
              */
+            System.out.println("请求成功:-------"+startTime);
         } catch (BlockException e1) {
-            // 资源访问阻止，被限流或被降级
-            e1.printStackTrace();
+            //throw new RuntimeException("资源访问阻止，被限流或被降级");
+            System.out.println("资源访问阻止，被限流或被降级:-------"+startTime);
             // 进行相应的处理操作
         } finally {
             if (entry != null) {
@@ -62,7 +67,6 @@ public class TestController {
             }
         }
         modelAndView.setViewName("index");
-        System.out.println("请求成功");
         return modelAndView;
     }
 
